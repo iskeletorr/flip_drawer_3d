@@ -28,9 +28,10 @@ class App extends StatelessWidget {
         mainPage: (BuildContext context, AnimationController controller,
             AnimationController controller2, ScrollController? controller3) {
           return CustomListView(
+            listController: controller3!,
             listView: ListView(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              controller: controller3! ,
               children: [
                 Container(
                   height: 50,
@@ -79,3 +80,6 @@ class App extends StatelessWidget {
     );
   }
 }
+
+// feature/newPage
+// fix-bugFix-hotFix/gestureError

@@ -3,7 +3,7 @@ part of 'td.dart';
 /// If you need just one direction you can use this.
 /// For example, contentPage only needs vertical drag
 /// so we did contentPage with AnimBuilder
-typedef AnimBuilder = Widget Function(
+typedef AnimBuilder = Widget? Function(
     BuildContext context, AnimationController controller);
 
 /// [controller] for vertical animation and
@@ -21,7 +21,7 @@ extension MainPageBuilderExtension on MainPageBuilder {
     if (this is _CustomPageViewBuilder) {
       return MainPageType.pageView;
     } else if (this is _CustomListViewBuilder) {
-      return MainPageType.pageView;
+      return MainPageType.listView;
     }
 
     return MainPageType.normalView;

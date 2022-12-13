@@ -48,16 +48,17 @@ class TdPage extends StatefulWidget {
 class _TdPageState extends DragHelper<TdPage> {
   late final ScrollController? _scrollController;
   late final PageController? _pageController;
+
   Axis? _direction;
   int _page = 0;
+
+  CustomPage? _customPage;
 
   bool get listViewOnEdge {
     if ((_scrollController == null) ||
         (_scrollController != null && !_scrollController!.hasClients)) {
       return false;
     }
-    print(_scrollController!.position.atEdge &&
-        _scrollController!.position.pixels == 0);
     return _scrollController!.position.atEdge &&
         _scrollController!.position.pixels == 0;
   }
@@ -70,6 +71,20 @@ class _TdPageState extends DragHelper<TdPage> {
     _pageController =
         widget.mainPage is _CustomPageViewBuilder ? PageController() : null;
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _customPage = widget.mainPage(
+        context,
+        horizontalController!,
+        verticalController!,
+        widget.mainPage is _CustomPageViewBuilder
+            ? _pageController!
+            : (widget.mainPage is _CustomListViewBuilder
+                ? _scrollController!
+                : null),
+      );
+      _direction = _customPage!.direction;
+      setState(() {});
+    });
     if (_pageController != null) {
       _pageController!.addListener(() {
         _page = _pageController!.page!.round();
@@ -78,7 +93,6 @@ class _TdPageState extends DragHelper<TdPage> {
     }
     if (_scrollController != null) {
       _scrollController!.addListener(() {
-        print(listViewOnEdge);
         setState(() {});
       });
     }
@@ -186,65 +200,51 @@ class _TdPageState extends DragHelper<TdPage> {
   }
 
   AnimatedBuilder mainPageTransform() {
-    // TODO: Fix that
-    var child = widget.mainPage(
-      context,
-      horizontalController!,
-      verticalController!,
-      widget.mainPage is _CustomPageViewBuilder
-          ? _pageController!
-          : (widget.mainPage is _CustomListViewBuilder
-              ? _scrollController!
-              : null),
-    );
-    _direction = child.direction;
-    print(widget.mainPage.type == MainPageType.listView);
-    print(_direction == Axis.horizontal && listViewOnEdge);
     return AnimatedBuilder(
         animation: verticalController!,
-        builder: (context, child) => Transform.translate(
-              offset: Offset(
-                  MediaQuery.of(context).size.width *
-                      0.8 *
-                      (horizontalController!.value),
-                  MediaQuery.of(context).size.height *
-                      0.01 *
-                      (verticalController!.value)),
-              child: Transform(
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
-                  ..rotateY(-math.pi * horizontalController!.value / 2)
-                  ..rotateX(-math.pi * (3 / 4) * (verticalController!.value)),
-                alignment: horizontalController!.value == 0
-                    ? Alignment.center
-                    : Alignment.centerLeft,
-                child: Opacity(
-                  opacity: verticalController!.value > 0.67 ? 0 : 1,
-                  child: RawGestureDetector(
-                      gestures: widget.mainPage.type == MainPageType.pageView
+        builder: (context, child) {
+          _customPage?.physics =
+              verticalController!.value > 0 || horizontalController!.value > 0
+                  ? const NeverScrollableScrollPhysics()
+                  : const AlwaysScrollableScrollPhysics();
+          return Transform.translate(
+            offset: Offset(
+                MediaQuery.of(context).size.width *
+                    0.8 *
+                    (horizontalController!.value),
+                MediaQuery.of(context).size.height *
+                    0.01 *
+                    (verticalController!.value)),
+            child: Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
+                ..rotateY(-math.pi * horizontalController!.value / 2)
+                ..rotateX(-math.pi * (3 / 4) * (verticalController!.value)),
+              alignment: horizontalController!.value == 0
+                  ? Alignment.center
+                  : Alignment.centerLeft,
+              child: Opacity(
+                opacity: verticalController!.value > 0.67 ? 0 : 1,
+                child: RawGestureDetector(
+                  gestures: widget.mainPage.type == MainPageType.pageView
+                      ? _direction == Axis.vertical
+                          ? gestureSet
+                          : _page == 0
+                              ? gestureSet
+                              : singleVerticalGestureSet
+                      : widget.mainPage.type == MainPageType.listView
                           ? _direction == Axis.vertical
                               ? gestureSet
-                              : _page == 0
+                              : listViewOnEdge
                                   ? gestureSet
                                   : singleVerticalGestureSet
-                          : widget.mainPage.type == MainPageType.listView
-                              ? _direction == Axis.horizontal && listViewOnEdge
-                                  ? gestureSet
-                                  : singleVerticalGestureSet
-                              : gestureSet,
-                      child: widget.mainPage(
-                        context,
-                        horizontalController!,
-                        verticalController!,
-                        widget.mainPage is _CustomPageViewBuilder
-                            ? _pageController!
-                            : (widget.mainPage is _CustomListViewBuilder
-                                ? _scrollController!
-                                : null),
-                      )),
+                          : gestureSet,
+                  child: _customPage ?? Container(),
                 ),
               ),
-            )
+            ),
+          );
+        }
         // ),
         );
   }
