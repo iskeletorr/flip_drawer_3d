@@ -10,8 +10,7 @@ class DragHelper<T extends StatefulWidget> extends State<T>
   // late final Animation<double> animation2;
   AnimationController? horizontalController;
 
-  ValueNotifier<bool> verticalDragListener = ValueNotifier<bool>(false);
-  ValueNotifier<bool> horizontalDragListener = ValueNotifier<bool>(false);
+  ValueNotifier<double> animValueListener = ValueNotifier<double>(0);
 
   bool verticalDrag = false;
   bool horizontalDrag = false;
@@ -79,7 +78,6 @@ class DragHelper<T extends StatefulWidget> extends State<T>
     _verticalStartPosition = details.localPosition;
     verticalDrag =
         verticalController!.isDismissed || verticalController!.isCompleted;
-    verticalDragListener.value = verticalDrag;
   }
 
   void onDragUpdateVertical(DragUpdateDetails details) {
@@ -118,7 +116,6 @@ class DragHelper<T extends StatefulWidget> extends State<T>
     _horizontalStartPosition = details.localPosition;
     horizontalDrag =
         horizontalController!.isDismissed || horizontalController!.isCompleted;
-    horizontalDragListener.value = horizontalDrag;
   }
 
   void onDragUpdateHorizontal(DragUpdateDetails details) {
@@ -130,6 +127,7 @@ class DragHelper<T extends StatefulWidget> extends State<T>
           calcAngle(_horizontalStartPosition, _horizontalCurrentPosition);
       double delta = details.primaryDelta! / MediaQuery.of(context).size.width;
       horizontalController!.value += delta;
+      animValueListener.value = horizontalController!.value;
     }
   }
 
@@ -146,8 +144,10 @@ class DragHelper<T extends StatefulWidget> extends State<T>
       horizontalController!.fling(velocity: visualVelocity);
     } else if (horizontalController!.value < 0.5) {
       horizontalController!.reverse();
+      animValueListener.value = 0;
     } else {
       horizontalController!.forward();
+      animValueListener.value = 1;
     }
   }
 

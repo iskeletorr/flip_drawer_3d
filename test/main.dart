@@ -31,46 +31,46 @@ class App extends StatelessWidget {
           return CustomListView(
             listController: controller3!,
             listView: TdListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.deepOrange,
-                ),
-                Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.indigo,
-                ),
-                Container(
-                  height: 600,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.indigo,
-                ),
-                Container(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.orange,
-                ),
-                Container(
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.indigo,
-                ),
-                Container(
-                  height: 500,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.yellow,
-                ),
-              ],
-            ), children: [],
+              scrollDirection: Axis.vertical,
+              controller: controller3,
+            ),
+            children: [
+              Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.deepOrange,
+              ),
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.indigo,
+              ),
+              Container(
+                height: 600,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.purple,
+              ),
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.indigo,
+              ),
+              Container(
+                height: 300,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.orange,
+              ),
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.indigo,
+              ),
+              Container(
+                height: 500,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.yellow,
+              ),
+            ],
           );
         },
         contentPage: (context, controller) => Container(

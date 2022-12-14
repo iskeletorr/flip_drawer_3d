@@ -6,7 +6,7 @@ import 'custom_gesture_widgets.dart';
 
 abstract class CustomPage extends StatelessWidget {
   final PageView? pageView;
-  final ListView? listView;
+  final TdListView? listView;
   final List<Widget>? children;
   final ScrollController? controller;
 
@@ -37,7 +37,7 @@ abstract class CustomPage extends StatelessWidget {
 class CustomListView extends CustomPage {
   CustomListView({
     super.key,
-    required ListView listView,
+    required TdListView listView,
     required List<Widget> children,
     required ScrollController listController,
   }) : super(
@@ -45,8 +45,9 @@ class CustomListView extends CustomPage {
 
   @override
   Widget build(BuildContext context) {
-    return listView!;
-        // .copyWith(physics: physics, controller: controller, children: children);
+    final a = listView!
+        .copyWith(physics: physics, controller: controller, children: children);
+    return a;
   }
 }
 // ---------------------------------------------------------------------------------------

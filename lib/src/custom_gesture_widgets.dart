@@ -52,7 +52,8 @@ class TdListView extends ListView {
               keyboardDismissBehavior ?? this.keyboardDismissBehavior,
           restorationId: restorationId ?? this.restorationId,
           clipBehavior: clipBehavior ?? this.clipBehavior,
-          controller: controller,
+          controller: controller ?? this.controller,
+          physics: physics ?? this.physics,
           children: children!,
         );
       case ConstructorType.builder:
@@ -145,10 +146,13 @@ class TdListView extends ListView {
         ScrollViewKeyboardDismissBehavior.manual,
     String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
+    
   }) : super(
           children: children,
+          controller: controller,
           scrollDirection: scrollDirection,
           reverse: reverse,
+          physics: physics,
           primary: primary,
           shrinkWrap: shrinkWrap,
           padding: padding,

@@ -85,13 +85,8 @@ class _TdPageState extends DragHelper<TdPage> {
       _direction = _customPage!.direction;
       setState(() {});
 
-      // horizontalDragListener.addListener(() {
-      //   _customPage!.physics = horizontalDrag
-      //       ? const NeverScrollableScrollPhysics()
-      //       : const AlwaysScrollableScrollPhysics();
-      // });
-      // verticalDragListener.addListener(() {
-      //   _customPage!.physics = verticalDrag
+      // animValueListener.addListener(() {
+      //   _customPage!.physics = animValueListener.value > 0
       //       ? const NeverScrollableScrollPhysics()
       //       : const AlwaysScrollableScrollPhysics();
       // });
@@ -211,10 +206,15 @@ class _TdPageState extends DragHelper<TdPage> {
         ));
   }
 
-  AnimatedBuilder mainPageTransform() {
-    return AnimatedBuilder(
+  Widget mainPageTransform() {
+    return ValueListenableBuilder(
+      valueListenable: animValueListener,
+      builder: (BuildContext context, value, Widget? child) => AnimatedBuilder(
         animation: verticalController!,
         builder: (context, child) {
+          _customPage?.physics = value > 0
+              ? const NeverScrollableScrollPhysics()
+              : const AlwaysScrollableScrollPhysics();
           return Transform.translate(
             offset: Offset(
                 MediaQuery.of(context).size.width *
@@ -247,14 +247,17 @@ class _TdPageState extends DragHelper<TdPage> {
                                   ? gestureSet
                                   : singleVerticalGestureSet)
                           : gestureSet,
-                  child: _customPage ?? Container(),
+                  child: _customPage?.listView!.copyWith(
+                          physics: _customPage?.physics,
+                          children: _customPage?.children) ??
+                      Container(),
                 ),
               ),
             ),
           );
-        }
-        // ),
-        );
+        },
+      ),
+    );
   }
 
   GestureDetector contentTransform() {
