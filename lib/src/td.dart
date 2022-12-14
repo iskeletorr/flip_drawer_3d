@@ -84,7 +84,19 @@ class _TdPageState extends DragHelper<TdPage> {
       );
       _direction = _customPage!.direction;
       setState(() {});
+
+      // horizontalDragListener.addListener(() {
+      //   _customPage!.physics = horizontalDrag
+      //       ? const NeverScrollableScrollPhysics()
+      //       : const AlwaysScrollableScrollPhysics();
+      // });
+      // verticalDragListener.addListener(() {
+      //   _customPage!.physics = verticalDrag
+      //       ? const NeverScrollableScrollPhysics()
+      //       : const AlwaysScrollableScrollPhysics();
+      // });
     });
+
     if (_pageController != null) {
       _pageController!.addListener(() {
         _page = _pageController!.page!.round();
@@ -203,10 +215,6 @@ class _TdPageState extends DragHelper<TdPage> {
     return AnimatedBuilder(
         animation: verticalController!,
         builder: (context, child) {
-          _customPage?.physics =
-              verticalController!.value > 0 || horizontalController!.value > 0
-                  ? const NeverScrollableScrollPhysics()
-                  : const AlwaysScrollableScrollPhysics();
           return Transform.translate(
             offset: Offset(
                 MediaQuery.of(context).size.width *
@@ -233,11 +241,11 @@ class _TdPageState extends DragHelper<TdPage> {
                               ? gestureSet
                               : singleVerticalGestureSet
                       : widget.mainPage.type == MainPageType.listView
-                          ? _direction == Axis.vertical
+                          ? (_direction == Axis.vertical
                               ? gestureSet
                               : listViewOnEdge
                                   ? gestureSet
-                                  : singleVerticalGestureSet
+                                  : singleVerticalGestureSet)
                           : gestureSet,
                   child: _customPage ?? Container(),
                 ),

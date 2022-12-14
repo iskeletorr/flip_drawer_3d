@@ -1,4 +1,5 @@
 import 'package:flip_drawer_3d/flip_drawer_3d.dart';
+import 'package:flip_drawer_3d/src/custom_gesture_widgets.dart';
 import 'package:flip_drawer_3d/src/main_base_page.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class App extends StatelessWidget {
             AnimationController controller2, ScrollController? controller3) {
           return CustomListView(
             listController: controller3!,
-            listView: ListView(
+            listView: TdListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: [
@@ -69,7 +70,7 @@ class App extends StatelessWidget {
                   color: Colors.yellow,
                 ),
               ],
-            ),
+            ), children: [],
           );
         },
         contentPage: (context, controller) => Container(

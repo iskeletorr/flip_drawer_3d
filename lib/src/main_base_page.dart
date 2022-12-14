@@ -1,17 +1,22 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'custom_gesture_widgets.dart';
 
 abstract class CustomPage extends StatelessWidget {
   final PageView? pageView;
   final ListView? listView;
+  final List<Widget>? children;
   final ScrollController? controller;
 
   ScrollPhysics _scrollPhysics = const AlwaysScrollableScrollPhysics();
 
-  CustomPage({Key? key, this.pageView, this.listView, this.controller})
-      : super(key: key);
+  CustomPage(
+      {Key? key, this.pageView, this.listView, this.controller, this.children})
+      : assert(!((pageView != null || listView != null) && controller == null),
+            'If you use any scrollable view, you must provide the controller given from the builder method.'),
+        super(key: key);
 
   Axis? get direction {
     if (pageView != null) {
@@ -33,13 +38,15 @@ class CustomListView extends CustomPage {
   CustomListView({
     super.key,
     required ListView listView,
+    required List<Widget> children,
     required ScrollController listController,
-  }) : super(listView: listView, controller: listController);
+  }) : super(
+            listView: listView, controller: listController, children: children);
 
   @override
   Widget build(BuildContext context) {
-    return listView!.copyWith(
-        physics: _scrollPhysics, controller: controller, children: [listView!]);
+    return listView!;
+        // .copyWith(physics: physics, controller: controller, children: children);
   }
 }
 // ---------------------------------------------------------------------------------------
@@ -66,53 +73,5 @@ class CustomNormalView extends CustomPage {
   @override
   Widget build(BuildContext context) {
     return child;
-  }
-}
-
-extension ListViewExtension on ListView {
-  ListView copyWith({
-    Axis? scrollDirection,
-    bool? reverse,
-    bool? shrinkWrap,
-    ScrollController? controller,
-    bool? primary,
-    ScrollPhysics? physics,
-    EdgeInsetsGeometry? padding,
-    double? itemExtent,
-    Widget? prototypeItem,
-    bool? addAutomaticKeepAlives,
-    bool? addRepaintBoundaries,
-    bool? addSemanticIndexes,
-    double? cacheExtent,
-    List<Widget>? children,
-    int? semanticChildCount,
-    DragStartBehavior? dragStartBehavior,
-    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior,
-    String? restorationId,
-    Clip? clipBehavior,
-  }) {
-    return ListView(
-      scrollDirection: scrollDirection ?? this.scrollDirection,
-      reverse: reverse ?? this.reverse,
-      controller: controller ?? this.controller,
-      shrinkWrap: shrinkWrap ?? this.shrinkWrap,
-      primary: primary ?? this.primary,
-      physics: physics ?? this.physics,
-      padding: padding ?? this.padding,
-      itemExtent: itemExtent ?? this.itemExtent,
-      prototypeItem: prototypeItem ?? this.prototypeItem,
-      addAutomaticKeepAlives: addAutomaticKeepAlives ?? true,
-      addRepaintBoundaries: addRepaintBoundaries ?? true,
-      addSemanticIndexes: addSemanticIndexes ?? true,
-      cacheExtent: cacheExtent ?? this.cacheExtent,
-      semanticChildCount: semanticChildCount ?? this.semanticChildCount,
-      dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
-      keyboardDismissBehavior:
-          keyboardDismissBehavior ?? this.keyboardDismissBehavior,
-      restorationId: restorationId ?? this.restorationId,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
-      // itemBuilder: itemBuilder ?? this.ite,
-      children: children ?? [],
-    );
   }
 }

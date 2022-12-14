@@ -9,6 +9,10 @@ class DragHelper<T extends StatefulWidget> extends State<T>
   AnimationController? verticalController;
   // late final Animation<double> animation2;
   AnimationController? horizontalController;
+
+  ValueNotifier<bool> verticalDragListener = ValueNotifier<bool>(false);
+  ValueNotifier<bool> horizontalDragListener = ValueNotifier<bool>(false);
+
   bool verticalDrag = false;
   bool horizontalDrag = false;
 
@@ -57,18 +61,11 @@ class DragHelper<T extends StatefulWidget> extends State<T>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    // animation = CurvedAnimation(
-    //   parent: verticalController!,
-    //   curve: Curves.fastOutSlowIn,
-    // );
+
     horizontalController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    // animation2 = CurvedAnimation(
-    //   parent: horizontalController!,
-    //   curve: Curves.linear,
-    // );
   }
 
   @override
@@ -82,6 +79,7 @@ class DragHelper<T extends StatefulWidget> extends State<T>
     _verticalStartPosition = details.localPosition;
     verticalDrag =
         verticalController!.isDismissed || verticalController!.isCompleted;
+    verticalDragListener.value = verticalDrag;
   }
 
   void onDragUpdateVertical(DragUpdateDetails details) {
@@ -120,6 +118,7 @@ class DragHelper<T extends StatefulWidget> extends State<T>
     _horizontalStartPosition = details.localPosition;
     horizontalDrag =
         horizontalController!.isDismissed || horizontalController!.isCompleted;
+    horizontalDragListener.value = horizontalDrag;
   }
 
   void onDragUpdateHorizontal(DragUpdateDetails details) {
