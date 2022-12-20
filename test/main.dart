@@ -29,11 +29,10 @@ class App extends StatelessWidget {
         mainPage: (BuildContext context, AnimationController controller,
             AnimationController controller2, ScrollController? controller3) {
           return CustomListView(
-            listController: controller3!,
-            listView: TdListView(
-              scrollDirection: Axis.vertical,
-              controller: controller3,
+            options: ListViewOptions(
+              scrollDirection: Axis.horizontal
             ),
+            listController: controller3!,
             children: [
               Container(
                 height: 50,

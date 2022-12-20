@@ -207,56 +207,50 @@ class _TdPageState extends DragHelper<TdPage> {
   }
 
   Widget mainPageTransform() {
-    return ValueListenableBuilder(
-      valueListenable: animValueListener,
-      builder: (BuildContext context, value, Widget? child) => AnimatedBuilder(
-        animation: verticalController!,
-        builder: (context, child) {
-          _customPage?.physics = value > 0
-              ? const NeverScrollableScrollPhysics()
-              : const AlwaysScrollableScrollPhysics();
-          return Transform.translate(
-            offset: Offset(
-                MediaQuery.of(context).size.width *
-                    0.8 *
-                    (horizontalController!.value),
-                MediaQuery.of(context).size.height *
-                    0.01 *
-                    (verticalController!.value)),
-            child: Transform(
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateY(-math.pi * horizontalController!.value / 2)
-                ..rotateX(-math.pi * (3 / 4) * (verticalController!.value)),
-              alignment: horizontalController!.value == 0
-                  ? Alignment.center
-                  : Alignment.centerLeft,
-              child: Opacity(
-                opacity: verticalController!.value > 0.67 ? 0 : 1,
-                child: RawGestureDetector(
-                  gestures: widget.mainPage.type == MainPageType.pageView
-                      ? _direction == Axis.vertical
-                          ? gestureSet
-                          : _page == 0
-                              ? gestureSet
-                              : singleVerticalGestureSet
-                      : widget.mainPage.type == MainPageType.listView
-                          ? (_direction == Axis.vertical
-                              ? gestureSet
-                              : listViewOnEdge
-                                  ? gestureSet
-                                  : singleVerticalGestureSet)
-                          : gestureSet,
-                  child: _customPage?.listView!.copyWith(
-                          physics: _customPage?.physics,
-                          children: _customPage?.children) ??
-                      Container(),
-                ),
+    return AnimatedBuilder(
+      animation: verticalController!,
+      builder: (context, child) {
+        _customPage?.physics = horizontalController!.value > 0
+            ? const NeverScrollableScrollPhysics()
+            : const AlwaysScrollableScrollPhysics();
+        return Transform.translate(
+          offset: Offset(
+              MediaQuery.of(context).size.width *
+                  0.8 *
+                  (horizontalController!.value),
+              MediaQuery.of(context).size.height *
+                  0.01 *
+                  (verticalController!.value)),
+          child: Transform(
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(-math.pi * horizontalController!.value / 2)
+              ..rotateX(-math.pi * (3 / 4) * (verticalController!.value)),
+            alignment: horizontalController!.value == 0
+                ? Alignment.center
+                : Alignment.centerLeft,
+            child: Opacity(
+              opacity: verticalController!.value > 0.67 ? 0 : 1,
+              child: RawGestureDetector(
+                gestures: widget.mainPage.type == MainPageType.pageView
+                    ? _direction == Axis.vertical
+                        ? gestureSet
+                        : _page == 0
+                            ? gestureSet
+                            : singleVerticalGestureSet
+                    : widget.mainPage.type == MainPageType.listView
+                        ? (_direction == Axis.vertical
+                            ? gestureSet
+                            : listViewOnEdge
+                                ? gestureSet
+                                : singleVerticalGestureSet)
+                        : gestureSet,
+                child: _customPage?.listView! ?? Container(),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

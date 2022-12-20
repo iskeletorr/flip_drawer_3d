@@ -3,6 +3,75 @@ import 'package:flutter/material.dart';
 
 enum ConstructorType { normal, builder, seprator, custom }
 
+class PageViewOptions {
+  final Axis scrollDirection = Axis.horizontal;
+  final bool reverse = false;
+  final ScrollPhysics? physics;
+  final bool pageSnapping = true;
+  final void Function(int)? onPageChanged;
+  final List<Widget> children = const <Widget>[];
+  final DragStartBehavior dragStartBehavior = DragStartBehavior.start;
+  final bool allowImplicitScrolling = false;
+  final String? restorationId;
+  final Clip clipBehavior = Clip.hardEdge;
+  final ScrollBehavior? scrollBehavior;
+  final bool padEnds = true;
+
+  PageViewOptions(this.physics, this.onPageChanged, this.restorationId,
+      this.scrollBehavior);
+}
+
+class ListViewOptions {
+  final ScrollPhysics? physics;
+  final Axis? scrollDirection;
+  final bool? reverse;
+  final bool? primary;
+  final bool? shrinkWrap;
+  final EdgeInsetsGeometry? padding;
+  final double? itemExtent;
+  final Widget? prototypeItem;
+  final bool? addAutomaticKeepAlives;
+  final bool? addRepaintBoundaries;
+  final bool? addSemanticIndexes;
+  final double? cacheExtent;
+  final List<Widget>? children;
+  final int? semanticChildCount;
+  final DragStartBehavior? dragStartBehavior;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+  final String? restorationId;
+  final Clip? clipBehavior;
+  final SliverChildDelegate? childrenDelegate;
+  final Widget Function(BuildContext, int)? itemBuilder;
+  final int? Function(Key)? findChildIndexCallback;
+  final Widget Function(BuildContext, int)? separatorBuilder;
+  final int? itemCount;
+
+  const ListViewOptions(
+      {this.physics,
+      this.scrollDirection,
+      this.reverse,
+      this.primary,
+      this.shrinkWrap,
+      this.padding,
+      this.itemExtent,
+      this.prototypeItem,
+      this.addAutomaticKeepAlives,
+      this.addRepaintBoundaries,
+      this.addSemanticIndexes,
+      this.cacheExtent,
+      this.children,
+      this.semanticChildCount,
+      this.dragStartBehavior,
+      this.keyboardDismissBehavior,
+      this.restorationId,
+      this.clipBehavior,
+      this.childrenDelegate,
+      this.itemBuilder,
+      this.findChildIndexCallback,
+      this.separatorBuilder,
+      this.itemCount});
+}
+
 class TdListView extends ListView {
   final ConstructorType constructorType;
 
@@ -146,7 +215,6 @@ class TdListView extends ListView {
         ScrollViewKeyboardDismissBehavior.manual,
     String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    
   }) : super(
           children: children,
           controller: controller,
