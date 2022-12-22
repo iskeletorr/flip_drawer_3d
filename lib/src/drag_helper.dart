@@ -1,18 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math' as math;
-import 'dart:developer' as dev;
 
-class DragHelper<T extends StatefulWidget> extends State<T>
-    with TickerProviderStateMixin {
-  // late final Animation<double> animation;
+class DragHelper<T extends StatefulWidget> extends State<T> with TickerProviderStateMixin {
   AnimationController? verticalController;
-  // late final Animation<double> animation2;
   AnimationController? horizontalController;
-
   bool verticalDrag = false;
   bool horizontalDrag = false;
-
+  bool contentIsAvailable = true;
   static const double _degreeRadian = 1.55968567;
 
   Offset _verticalStartPosition = Offset.zero;
@@ -30,10 +25,8 @@ class DragHelper<T extends StatefulWidget> extends State<T>
   }
 
   bool get isAllowedHorizontalDrag {
-    Direction direction = Direction.getDirection(
-        _verticalStartPosition, _verticalCurrentPosition, _verticalAngle);
-    if ((direction == Direction.bltr && _degreeRadian / 2 > _verticalAngle) ||
-        (direction == Direction.tlbr && _verticalAngle > -_degreeRadian / 2)) {
+    Direction direction = Direction.getDirection(_verticalStartPosition, _verticalCurrentPosition, _verticalAngle);
+    if ((direction == Direction.bltr && _degreeRadian / 2 > _verticalAngle) || (direction == Direction.tlbr && _verticalAngle > -_degreeRadian / 2)) {
       return true;
     } else if (horizontalController!.value > 0.51) {
       return true;
@@ -42,10 +35,8 @@ class DragHelper<T extends StatefulWidget> extends State<T>
   }
 
   bool get isAllowedVerticalDrag {
-    Direction direction = Direction.getDirection(
-        _horizontalStartPosition, _horizontalCurrentPosition, _horizontalAngle);
-    if ((direction == Direction.bltr && _degreeRadian / 2 < _verticalAngle) ||
-        (direction == Direction.tlbr && _verticalAngle < -_degreeRadian / 2)) {
+    Direction direction = Direction.getDirection(_horizontalStartPosition, _horizontalCurrentPosition, _horizontalAngle);
+    if ((direction == Direction.bltr && _degreeRadian / 2 < _verticalAngle) || (direction == Direction.brtl && _verticalAngle < -_degreeRadian / 2)) {
       return false;
     }
     return true;
@@ -58,7 +49,6 @@ class DragHelper<T extends StatefulWidget> extends State<T>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-
     horizontalController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -74,34 +64,29 @@ class DragHelper<T extends StatefulWidget> extends State<T>
 
   void onDragStartVertical(DragStartDetails details) {
     _verticalStartPosition = details.localPosition;
-    verticalDrag =
-        verticalController!.isDismissed || verticalController!.isCompleted;
+    verticalDrag = verticalController!.isDismissed || verticalController!.isCompleted;
   }
 
   void onDragUpdateVertical(DragUpdateDetails details) {
-    if (kDebugMode) {
-      dev.log(
-          "[onDragUpdateVertical] $verticalDrag  && $isAllowedHorizontalDrag");
-    }
     if (verticalDrag && !isAllowedHorizontalDrag) {
       _verticalCurrentPosition = details.localPosition;
-      _verticalAngle =
-          calcAngle(_verticalStartPosition, _verticalCurrentPosition);
-      if (kDebugMode) dev.log("angle = $_verticalAngle");
+      _verticalAngle = calcAngle(_verticalStartPosition, _verticalCurrentPosition);
       double delta = details.primaryDelta! / MediaQuery.of(context).size.height;
-      verticalController!.value -= delta;
+      if ((_verticalCurrentPosition.dy - _verticalStartPosition.dy).abs() > MediaQuery.of(context).size.height * 0.15) {
+        if (contentIsAvailable) {
+          verticalController!.value -= delta;
+        }
+      }
     }
   }
 
   void onDragEndVertical(DragEndDetails details) {
     double minFlingVelocity = MediaQuery.of(context).size.height;
-
     if (verticalController!.isDismissed || verticalController!.isCompleted) {
       return;
     }
     if (details.velocity.pixelsPerSecond.dx.abs() >= minFlingVelocity) {
-      double visualVelocity = details.velocity.pixelsPerSecond.dx /
-          MediaQuery.of(context).size.height;
+      double visualVelocity = details.velocity.pixelsPerSecond.dx / MediaQuery.of(context).size.height;
       verticalController!.fling(velocity: visualVelocity);
     } else if (verticalController!.value < 0.5) {
       verticalController!.reverse();
@@ -112,17 +97,13 @@ class DragHelper<T extends StatefulWidget> extends State<T>
 
   void onDragStartHorizontal(DragStartDetails details) {
     _horizontalStartPosition = details.localPosition;
-    horizontalDrag =
-        horizontalController!.isDismissed || horizontalController!.isCompleted;
+    horizontalDrag = horizontalController!.isDismissed || horizontalController!.isCompleted;
   }
 
   void onDragUpdateHorizontal(DragUpdateDetails details) {
-    dev.log(
-        "[onDragUpdateHorizontal] $horizontalDrag && $isAllowedHorizontalDrag ");
     if (horizontalDrag && isAllowedHorizontalDrag) {
       _horizontalCurrentPosition = details.localPosition;
-      _horizontalAngle =
-          calcAngle(_horizontalStartPosition, _horizontalCurrentPosition);
+      _horizontalAngle = calcAngle(_horizontalStartPosition, _horizontalCurrentPosition);
       double delta = details.primaryDelta! / MediaQuery.of(context).size.width;
       horizontalController!.value += delta;
     }
@@ -131,13 +112,11 @@ class DragHelper<T extends StatefulWidget> extends State<T>
   void onDragEndHorizontal(DragEndDetails details) {
     double minFlingVelocity = MediaQuery.of(context).size.width;
 
-    if (horizontalController!.isDismissed ||
-        horizontalController!.isCompleted) {
+    if (horizontalController!.isDismissed || horizontalController!.isCompleted) {
       return;
     }
     if (details.velocity.pixelsPerSecond.dy.abs() >= minFlingVelocity) {
-      double visualVelocity = details.velocity.pixelsPerSecond.dy /
-          MediaQuery.of(context).size.width;
+      double visualVelocity = details.velocity.pixelsPerSecond.dy / MediaQuery.of(context).size.width;
       horizontalController!.fling(velocity: visualVelocity);
     } else if (horizontalController!.value < 0.5) {
       horizontalController!.reverse();
@@ -172,7 +151,6 @@ enum Direction {
     if (radian < 0 && end.dx > start.dx && end.dy > start.dy) {
       return Direction.tlbr;
     }
-
     return Direction.none;
   }
 }

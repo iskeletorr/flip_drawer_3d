@@ -1,6 +1,4 @@
 import 'package:flip_drawer_3d/flip_drawer_3d.dart';
-import 'package:flip_drawer_3d/src/custom_gesture_widgets.dart';
-import 'package:flip_drawer_3d/src/main_base_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,72 +12,63 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TdPage(
-        appBar: (BuildContext context, AnimationController controller,
-            AnimationController controller2) {
-          return CustomAppBar(
-            animationController: controller,
-            animationController2: controller2,
-            title: const Text("Test"),
-          );
-        },
-        drawer: const CustomDrawer(
-          child: Drawer(),
-        ),
-        mainPage: (BuildContext context, AnimationController controller,
-            AnimationController controller2, ScrollController? controller3) {
-          return CustomListView(
-            options: ListViewOptions(
-              scrollDirection: Axis.horizontal
-            ),
-            listController: controller3!,
-            children: [
-              Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.deepOrange,
+      home: FlipDrawer3D(
+          appBar: (context, controller, controller2) => CustomAppBar(
+                color: Colors.pink,
+                horizontalController: controller,
+                verticalController: controller2,
+                title: Text('AppBar Text'),
               ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.indigo,
+          mainPage: (context, controller, controller2, controller3) => CustomNormalView(
+                child: Container(
+                  color: Colors.blue,
+                    constraints: BoxConstraints.expand(),
+                    child: Column(
+                      children: [
+                        Center(child: Text('sdsdsds')),
+                      ],
+                    )),
+                // pageViewOptions: PageViewOptions(
+                //   // separatorBuilder: (p0, p1) => Text(''),
+                //   // itemCount: 5,
+                //   // itemBuilder: (p0, p1) => Container(width: 200,height: 200,color: Colors.amber,child: Center(child: Text(p1.toString())),),
+                //   childrenDelegate: SliverChildBuilderDelegate((context, index) => Container(width: 200,height: 200,color: Colors.amber,child: Center(child: Text(index.toString())),)),
+                //   // scrollDirection: Axis.horizontal,
+                //   // children: [
+                //   //   Container(
+                //   //     child: Center(
+                //   //       child: Text('Page1'),
+                //   //     ),
+                //   //     color: Colors.amber,
+                //   //     width: MediaQuery.of(context).size.width / 2,
+                //   //     height: MediaQuery.of(context).size.height / 2,
+                //   //   ),
+                //   //   Container(
+                //   //     child: Center(
+                //   //       child: Text('Page2'),
+                //   //     ),
+                //   //     color: Colors.amber,
+                //   //     width: MediaQuery.of(context).size.width / 2,
+                //   //     height: MediaQuery.of(context).size.height / 2,
+                //   //   ),
+                //   //   Container(
+                //   //     child: Center(
+                //   //       child: Text('Page3'),
+                //   //     ),
+                //   //     color: Colors.amber,
+                //   //     width: MediaQuery.of(context).size.width / 2,
+                //   //     height: MediaQuery.of(context).size.height / 2,
+                //   //   ),
+                //   // ],
+                // ),
               ),
-              Container(
-                height: 600,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.purple,
+          contentPage: (context, controller) => Container(
+                color: Colors.pink,
               ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.indigo,
-              ),
-              Container(
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.orange,
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.indigo,
-              ),
-              Container(
-                height: 500,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.yellow,
-              ),
-            ],
-          );
-        },
-        contentPage: (context, controller) => Container(
-          color: Colors.blueGrey,
-        ),
-      ),
-      theme: ThemeData.dark(),
+          drawer: CustomDrawer(
+            backgroundColor: Colors.blue,
+            child: Column(),
+          )),
     );
   }
 }
-
-// feature/newPage
-// fix-bugFix-hotFix/gestureError
