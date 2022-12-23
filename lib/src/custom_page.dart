@@ -6,17 +6,6 @@ import 'package:flutter/material.dart';
 import 'custom_constructor_widgets.dart';
 
 abstract class CustomPage extends StatelessWidget {
-  // // ListView
-  // final List<Widget>? children;
-  // // ListView.builder && ListView.separated && PageView.builder
-  // final Widget Function(BuildContext, int)? itemBuilder;
-  // // ListView.separated
-  // final Widget Function(BuildContext, int)? separatorBuilder;
-  // // ListView.separated && PageView.builder
-  // final int? itemCount;
-  // // ListView.custom && PageView.custom
-  // final SliverChildDelegate? childrenDelegate;
-
   final ListViewOptions? listViewOptions;
   final PageViewOptions? pageViewOptions;
 
@@ -30,24 +19,7 @@ abstract class CustomPage extends StatelessWidget {
     _controller = sc;
   }
 
-  CustomPage(
-      {Key? key,
-      // this.controller,
-      // this.children,
-      // this.itemBuilder,
-      // this.separatorBuilder,
-      // this.childrenDelegate,
-      this.listViewOptions,
-      // this.itemCount,
-      this.pageViewOptions})
-      : super(key: key);
-
-  // ScrollPhysics get physics => _scrollPhysics;
-
-  // CustomPage({Key? key, this.pageView, this.listView, this.controller, this.children})
-  //     : assert(!((pageView != null || listView != null) && controller == null),
-  //           'If you use any scrollable view, you must provide the controller given from the builder method.'),
-  //       super(key: key);
+  CustomPage({Key? key, this.listViewOptions, this.pageViewOptions}) : super(key: key);
 
   ListView? get listView {
     if (listViewOptions?.children != null) {
@@ -231,7 +203,7 @@ class CustomPageView extends CustomPage {
 
 class CustomNormalView extends CustomPage {
   final Widget child;
-  CustomNormalView({Key? key, required this.child}) : super(key: key);
+  CustomNormalView({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -60,17 +60,12 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
     if (_pageController != null) {
       _pageController!.addListener(() {
         _page = _pageController!.page!.round();
-        print('page : $_page');
         _currentPage.value = _page;
-        print('currentPage : ${_currentPage.value}');
       });
     }
     if (_scrollController != null) {
       _scrollController!.addListener(() {
-        print('listViewOnEdge : $listViewOnEdge');
         _listViewNotifier.value = listViewOnEdge;
-        print('_listViewNotifier : ${_listViewNotifier.value}');
-        // setState(() {});
       });
     }
 
@@ -85,7 +80,7 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
         _customPage?.setController = _pageController as ScrollController;
       } else if (widget.mainPage is _CustomListViewBuilder) {
         _customPage?.setController = _scrollController!;
-      } // conditional listview or pageview
+      }
       _direction = _customPage?.direction;
       setState(() {});
     });
@@ -172,11 +167,6 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
         ));
   }
 
-  // ScrollPhysics getPhysics() {
-  //   return (verticalController!.value > 0 || horizontalController!.value > 0)
-  //       ? const NeverScrollableScrollPhysics()
-  //       : const AlwaysScrollableScrollPhysics();
-  // }
   AnimatedBuilder mainPageTransform() {
     return AnimatedBuilder(
       animation: verticalController!,
@@ -216,10 +206,7 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
                               ? _customPage?.listView ?? Container()
                               : widget.mainPage is _CustomPageViewBuilder
                                   ? _customPage?.pageView ?? Container()
-                                  : Container(
-                                      padding: EdgeInsets.only(top: AppBar().preferredSize.height),
-                                      child: widget.mainPage(context, horizontalController!, verticalController!, null),
-                                    ))),
+                                  : widget.mainPage(context, horizontalController!, verticalController!, null))),
                 ),
               );
             });

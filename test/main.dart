@@ -20,14 +20,16 @@ class App extends StatelessWidget {
                 title: Text('AppBar Text'),
               ),
           mainPage: (context, controller, controller2, controller3) => CustomNormalView(
-                child: Container(
-                  color: Colors.blue,
-                    constraints: BoxConstraints.expand(),
-                    child: Column(
-                      children: [
-                        Center(child: Text('sdsdsds')),
-                      ],
-                    )),
+                child: Column(
+                  children: [
+                    Container(color: Colors.green, height: 200, child: Center(child: Text('sdsdsds'))),
+                    Expanded(
+                        child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) => Text(index.toString()),
+                    ))
+                  ],
+                ),
                 // pageViewOptions: PageViewOptions(
                 //   // separatorBuilder: (p0, p1) => Text(''),
                 //   // itemCount: 5,
