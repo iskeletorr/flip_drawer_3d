@@ -92,7 +92,7 @@ abstract class CustomPage extends StatelessWidget {
           scrollDirection: listViewOptions?.scrollDirection ?? Axis.vertical,
           reverse: listViewOptions?.reverse ?? false,
           controller: _controller,
-          primary: listViewOptions?.primary ?? true,
+          primary: listViewOptions?.primary,
           physics: _scrollPhysics,
           shrinkWrap: listViewOptions?.shrinkWrap ?? false,
           padding: listViewOptions?.padding,
