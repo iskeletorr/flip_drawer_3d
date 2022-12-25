@@ -206,7 +206,7 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
                               ? _customPage?.listView ?? Container()
                               : widget.mainPage is _CustomPageViewBuilder
                                   ? _customPage?.pageView ?? Container()
-                                  : widget.mainPage(context, horizontalController!, verticalController!, null))),
+                                  : Container(padding: EdgeInsets.only(top: AppBar().preferredSize.height),child: widget.mainPage(context, horizontalController!, verticalController!, null)))),
                 ),
               );
             });
