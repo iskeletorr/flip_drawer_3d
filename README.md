@@ -48,7 +48,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
               )),
         );
       }
- ![](gif/usage.gif)
+ ![](./gif/usage.gif)
 
 ## Example
 
@@ -78,7 +78,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](gif/example.gif)
+![](./gif/example.gif)
 
 2. ListView example
 
@@ -125,7 +125,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](gif/example2.gif)
+![](./gif/example2.gif)
 
 3. ListView.builder example
 
@@ -154,7 +154,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](gif/example3.gif)
+![](./gif/example3.gif)
 
 
 ## Additional information
