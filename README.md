@@ -48,7 +48,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
               )),
         );
       }
- ![](https://github.com/iskeletorr/flip_drawer_3d/blob/options/gif/usage.gif?raw=true)
+<img src="https://github.com/iskeletorr/flip_drawer_3d/blob/main/gif/usage.gif?raw=true">
 
 ## Example
 
@@ -78,7 +78,8 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](https://github.com/iskeletorr/flip_drawer_3d/blob/options/gif/example.gif?raw=true)
+
+<img src="https://github.com/iskeletorr/flip_drawer_3d/blob/main/gif/example.gif?raw=true">
 
 2. ListView example
 
@@ -125,7 +126,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](https://github.com/iskeletorr/flip_drawer_3d/blob/options/gif/example2.gif?raw=true)
+<img src="https://github.com/iskeletorr/flip_drawer_3d/blob/main/gif/example2.gif?raw=true">
 
 3. ListView.builder example
 
@@ -154,7 +155,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
                     backgroundColor: Colors.blue,
                     child: Column(),
                   )),
-![](https://github.com/iskeletorr/flip_drawer_3d/blob/options/gif/example3.gif?raw=true)
+<img src="https://github.com/iskeletorr/flip_drawer_3d/blob/main/gif/example3.gif?raw=true">
 
 
 ## Additional information
