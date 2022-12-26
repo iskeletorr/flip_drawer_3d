@@ -37,12 +37,12 @@ abstract class CustomPage extends StatelessWidget {
           addRepaintBoundaries: listViewOptions?.addRepaintBoundaries ?? true,
           addSemanticIndexes: listViewOptions?.addSemanticIndexes ?? true,
           cacheExtent: listViewOptions?.cacheExtent,
-          children: listViewOptions!.children!,
           semanticChildCount: listViewOptions?.semanticChildCount,
           dragStartBehavior: listViewOptions?.dragStartBehavior ?? DragStartBehavior.start,
           keyboardDismissBehavior: listViewOptions?.keyboardDismissBehavior ?? ScrollViewKeyboardDismissBehavior.manual,
           restorationId: listViewOptions?.restorationId,
-          clipBehavior: listViewOptions?.clipBehavior ?? Clip.hardEdge);
+          clipBehavior: listViewOptions?.clipBehavior ?? Clip.hardEdge,
+          children: listViewOptions!.children!);
     } else if (listViewOptions?.itemBuilder != null && listViewOptions?.separatorBuilder == null) {
       return ListView.builder(
           scrollDirection: listViewOptions?.scrollDirection ?? Axis.vertical,
@@ -118,13 +118,13 @@ abstract class CustomPage extends StatelessWidget {
         physics: _scrollPhysics,
         pageSnapping: pageViewOptions?.pageSnapping ?? true,
         onPageChanged: pageViewOptions?.onPageChanged,
-        children: pageViewOptions!.children!,
         dragStartBehavior: pageViewOptions?.dragStartBehavior ?? DragStartBehavior.start,
         allowImplicitScrolling: pageViewOptions?.allowImplicitScrolling ?? false,
         restorationId: pageViewOptions?.restorationId,
         clipBehavior: pageViewOptions?.clipBehavior ?? Clip.hardEdge,
         scrollBehavior: pageViewOptions?.scrollBehavior,
         padEnds: true,
+        children: pageViewOptions!.children!,
       );
     } else if (pageViewOptions?.itemBuilder != null) {
       return PageView.builder(

@@ -17,12 +17,12 @@ class App extends StatelessWidget {
                 color: Colors.pink,
                 horizontalController: controller,
                 verticalController: controller2,
-                title: Text('AppBar Text'),
+                title: const Text('AppBar Text'),
               ),
           mainPage: (context, controller, controller2, controller3) => CustomNormalView(
                 child: Column(
                   children: [
-                    Container(color: Colors.green, height: 200, child: Center(child: Text('Text'))),
+                    Container(color: Colors.green, height: 200, child: const Center(child: Text('Text'))),
                     Expanded(
                         child: ListView.builder(
                       itemCount: 10,
