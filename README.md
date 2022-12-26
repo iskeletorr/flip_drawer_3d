@@ -5,7 +5,7 @@ This package provides you 3d flip effect while dragging both horizontally(for dr
 1.  Add the latest version of package to your pubspec.yaml 
 
         dependencies:
-          flip_drawer_3d: ^0.0.1
+          flip_drawer_3d: ^0.0.2
 
 2.  Import the package and use it in your Flutter app
 
