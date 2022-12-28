@@ -51,6 +51,20 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
     return _scrollController!.position.atEdge && _scrollController!.position.pixels == 0;
   }
 
+  Map<Type, GestureRecognizerFactory<GestureRecognizer>> get gesture => widget.mainPage.type == MainPageType.pageView
+      ? _direction == Axis.vertical
+          ? {...allowHorizontal, ...allowVertical}
+          : _page == 0
+              ? {...allowHorizontal, ...allowVertical}
+              : allowVertical
+      : widget.mainPage.type == MainPageType.listView
+          ? (_direction == Axis.vertical
+              ? {...allowHorizontal, ...allowVertical}
+              : listViewOnEdge
+                  ? {...allowHorizontal, ...allowVertical}
+                  : allowVertical)
+          : {...allowHorizontal, ...allowVertical};
+
   @override
   void initState() {
     super.initState();
@@ -91,6 +105,8 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
   void dispose() {
     _pageController?.dispose();
     _scrollController?.dispose();
+    _currentPage.dispose();
+    _listViewNotifier.dispose();
     super.dispose();
   }
 
@@ -178,19 +194,7 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
             valueListenable: _pageController == null ? _listViewNotifier : _currentPage,
             builder: (BuildContext context, dynamic value, Widget? child) {
               return RawGestureDetector(
-                gestures: widget.mainPage.type == MainPageType.pageView
-                    ? _direction == Axis.vertical
-                        ? {...allowHorizontal, ...allowVertical}
-                        : _page == 0
-                            ? {...allowHorizontal, ...allowVertical}
-                            : allowVertical
-                    : widget.mainPage.type == MainPageType.listView
-                        ? (_direction == Axis.vertical
-                            ? {...allowHorizontal, ...allowVertical}
-                            : listViewOnEdge
-                                ? {...allowHorizontal, ...allowVertical}
-                                : allowVertical)
-                        : {...allowHorizontal, ...allowVertical},
+                gestures: gesture,
                 child: Transform.translate(
                   offset: Offset(MediaQuery.of(context).size.width * 0.8 * (horizontalController!.value),
                       MediaQuery.of(context).size.height * 0.01 * (verticalController!.value)),
@@ -206,7 +210,9 @@ class _FlipDrawer3DState extends DragHelper<FlipDrawer3D> {
                               ? _customPage?.listView ?? Container()
                               : widget.mainPage is _CustomPageViewBuilder
                                   ? _customPage?.pageView ?? Container()
-                                  : Container(padding: EdgeInsets.only(top: AppBar().preferredSize.height),child: widget.mainPage(context, horizontalController!, verticalController!, null)))),
+                                  : Container(
+                                      padding: EdgeInsets.only(top: AppBar().preferredSize.height),
+                                      child: widget.mainPage(context, horizontalController!, verticalController!, null)))),
                 ),
               );
             });
